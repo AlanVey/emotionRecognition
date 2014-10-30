@@ -5,17 +5,12 @@ function [bestAttribute] = chooseBestDecisionAttribute(examples, attributes, bin
     curBest = curBest + 1;
   end
   for (a = 1 : length(attributes))
-    flag = 0;
     while (attributes(a) == -1)
       a = a + 1;
       if (a > length(attributes))
-        flag = 1;
-        break;
+        bestAttribute = curBest;
+        return;
       end
-    end
-    
-    if (flag == 1)
-      break;
     end
 
     p = countMember(1, a, examples);
