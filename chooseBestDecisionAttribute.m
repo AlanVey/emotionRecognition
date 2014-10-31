@@ -34,3 +34,38 @@ function [bestAttribute] = chooseBestDecisionAttribute(examples, attributes, bin
     end    
   end
   bestAttribute = curBest;
+end
+  
+function [I] = calcI(p, n)
+  temp1 = p / (p + n);
+  temp2 = n / (p + n);
+  if (temp1 ~= 0)
+    temp1 = (temp1 * log2(temp1));
+  end
+  if (temp2 ~= 0)
+    temp2 = (temp2 * log2(temp2));
+  end
+  I = -temp1 - temp2;
+end
+
+function [count] = countMember(elem, pos, examples)
+  semiCount = 0;
+  for (i = 1 : size(examples, 1))
+    if (examples(i,pos) == elem)
+      semiCount = semiCount + 1;
+    end
+  end
+  count = semiCount;
+end
+
+function [count] = getNumExmamples(exm, atr, index, examples, binary_targets)
+  semiCount = 0;
+  for (i = 1 : size(examples))
+    if (examples(i, index) == atr && binary_targets(i) == exm)
+      semiCount = semiCount + 1;
+    end
+  end
+  count = semiCount;
+end
+
+
