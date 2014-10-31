@@ -58,7 +58,7 @@ function [count] = countMember(elem, pos, examples)
   count = semiCount;
 end
 
-function [count] = getNumExmamples(exm, atr, index, examples, binary_targets)
+function [count] = getNumExamples(exm, atr, index, examples, binary_targets)
   semiCount = 0;
   for (i = 1 : size(examples))
     if (examples(i, index) == atr && binary_targets(i) == exm)
