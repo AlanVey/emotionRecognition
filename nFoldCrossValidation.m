@@ -15,7 +15,7 @@ function predictions = nFoldCrossValidation(examples, answers, n)
     end
     
     predictions(i, 1) = {testTrees(trees, examples(tI1:tI2, :))};
-    predictions(i, 2) = {answers(tI1:tI2, :) == j};
+    predictions(i, 2) = {answers(tI1:tI2, :)};
   end
 
 end
