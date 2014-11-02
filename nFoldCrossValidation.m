@@ -10,8 +10,11 @@ function predictions = nFoldCrossValidation(examples, answers, n)
     egs   = [examples(egI1:egI2, :); examples(egI3:egI4, :)];
     answs = [answers(egI1:egI2, :); answers(egI3:egI4, :)];
     
-    for j = 1:6     
-      trees(j) = {decisionTreeLearning(egs, (1:45), answs == j)};
+    for j = 1:6
+      tempAnsws = answs;
+      tempAnsws(tempAnsws == j) = 1;
+      tempAnsws(tempAnsws ~= j) = 0;
+      trees(j) = {decisionTreeLearning(egs, (1:45), tempAnsws)};
     end
     
     predictions(i, 1) = {testTrees(trees, examples(tI1:tI2, :))};
