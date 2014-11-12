@@ -1,3 +1,27 @@
+function [stats] = generateAllStats(predictions, actual)
+  totalConfusion = zeros(6,6);
+  for (i = 1 : length(predictions))
+    foldConfusion = generateConfusion(predictions{i,1}, actual{i,1});
+    totalConfusion = totalConfusion + foldConfusion;
+  end
+  rawStats = calculateStats(totalConfusion);
+  stats = averageCVCR(rawStats);
+end
+
+function [CVCR] = averageCVCR(stats)
+  CVCR = repmat(struct('recall', 0, 'precision', 0, 'f1', 0, 'classRate', 0), length(stats(1).classes), 1);
+  for (i = 1 : length(stats(1).classes))
+    S = struct('recall', 0, 'precision', 0, 'f1', 0, 'classRate', 0);
+    for (j = 1 : length(stats))
+      S.recall = S.recall + (stats(j).classes(i).recall / length(stats));
+      S.precision = S.precision + (stats(j).classes(i).precision / length(stats));
+      S.f1 = S.f1 + (stats(j).classes(i).f1 / length(stats));
+      S.classRate = S.classRate + (stats(j).classes(i).classRate / length(stats));
+    end
+    CVCR(i) = S;
+  end
+end
+
 function [stats] = calculateStats(confusion)
   numClasses = size(confusion, 1);
   stats.classes = [];
