@@ -1,10 +1,10 @@
-function [bestLayerSize, bestNumLayers, bestValPc, bestLr] = optParamsGD(x, y)
+function [bestLayerSize, bestNumLayers, bestValPc, bestLr, bestF1] = optParamsGD(x, y)
   bestF1 = 0;
   for (layerSize = 45 : 100)
     for (numLayers = 1 : 5)
-      for (valPc = 5 : 20)
-        for (lr = 1 : 200)
-          result = nFoldCrossValidationGD(x, y, 10, layerSize, numLayers, valPc / 100, lr / 1000);
+      for (valPc = 0.05 : 0.01 : 0.20)
+        for (lr = 0.01 : 0.01 : 0.1)
+          result = nFoldCrossValidationGD(x, y, 10, layerSize, numLayers, valPc, lr);
           stats = generateAllStats(result);
           if (calcMeanF1(stats) > bestF1)
             bestF1 = calcMeanF1(stats);
