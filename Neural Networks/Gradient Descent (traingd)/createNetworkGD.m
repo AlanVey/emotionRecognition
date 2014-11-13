@@ -1,4 +1,4 @@
-function [net] = createNetwork(layerSize, numLayers, valPc, lr, x, y)
+function [net] = createNetworkGD(layerSize, numLayers, valPc, lr, x, y)
   hiddenSizes(1:numLayers) = layerSize;
   net = feedforwardnet(hiddenSizes, 'traingd');
   

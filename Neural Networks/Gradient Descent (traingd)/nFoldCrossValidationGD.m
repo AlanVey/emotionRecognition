@@ -1,4 +1,4 @@
-function predictions = nFoldCrossValidation(examples, answers, n, layerSize, numLayers, valPc, lr)
+function predictions = nFoldCrossValidationGD(examples, answers, n, layerSize, numLayers, valPc, lr)
 %CROSSVALIDATION takes in data and perfoms nfold validation, generates
 %predictions and returns them with expected values
   predictions = cell(n, 2);
@@ -10,7 +10,7 @@ function predictions = nFoldCrossValidation(examples, answers, n, layerSize, num
     answs = [answers(egI1:egI2, :); answers(egI3:egI4, :)];
     
     [x2, y2] = ANNdata(egs, answs);
-    net = createNetwork(layerSize, numLayers, valPc, lr, x2, y2);
+    net = createNetworkGD(layerSize, numLayers, valPc, lr, x2, y2);
     
     predictions(i, 1) = {testANN(net, examples(tI1:tI2, :)')};
     predictions(i, 2) = {answers(tI1:tI2, :)};
