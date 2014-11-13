@@ -1,7 +1,7 @@
-function [stats] = generateAllStats(predictions, actual)
+function [stats] = generateAllStats(folds)
   totalConfusion = zeros(6,6);
-  for (i = 1 : length(predictions))
-    foldConfusion = generateConfusion(predictions{i,1}, actual{i,1});
+  for (i = 1 : length(folds))
+    foldConfusion = generateConfusion(folds{i,1}, folds{i,2});
     totalConfusion = totalConfusion + foldConfusion;
   end
   rawStats = calculateStats(totalConfusion);
