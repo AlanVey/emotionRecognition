@@ -1,23 +1,18 @@
-function predictions = nFoldCrossValidation(examples, answers, n)
+function predictions = nFoldCrossValidation(examples, answers, n, layerSize, numLayers, valPc, lr)
 %CROSSVALIDATION takes in data and perfoms nfold validation, generates
 %predictions and returns them with expected values
   predictions = cell(n, 2);
 
   for i = 1:n
-    trees = cell(1, 6);  
     [egI1, egI2, egI3, egI4, tI1, tI2] = partition(size(answers, 1), i, n);
     
     egs   = [examples(egI1:egI2, :); examples(egI3:egI4, :)];
     answs = [answers(egI1:egI2, :); answers(egI3:egI4, :)];
     
-    for j = 1:6
-      tempAnsws = answs;
-      tempAnsws(tempAnsws ~= j) = 0;
-      tempAnsws(tempAnsws == j) = 1;
-      trees(j) = {decisionTreeLearning(egs, (1:45), tempAnsws)};
-    end
+    [x2, y2] = ANNdata(egs, answs);
+    net = createNetwork(layerSize, numLayers, valPc, lr, x2, y2);
     
-    predictions(i, 1) = {testTrees2(trees, examples(tI1:tI2, :))};
+    predictions(i, 1) = {testANN(net, examples(tI1:tI2, :)')};
     predictions(i, 2) = {answers(tI1:tI2, :)};
   end
 

@@ -1,6 +1,6 @@
-function [net] = createNetwork(layerSize, numLayers, valPc, trainFunc, x, y)
+function [net] = createNetwork(layerSize, numLayers, valPc, lr, x, y)
   hiddenSizes(1:numLayers) = layerSize;
-  net = feedforwardnet(hiddenSizes, trainFunc);
+  net = feedforwardnet(hiddenSizes, 'traingd');
   
   net.divideFcn = 'divideind';
   net.divideParam.trainInd = 1 : floor(length(x) - (length(x) * valPc));
