@@ -7,6 +7,8 @@ function [net] = createNetwork(layerSize, numLayers, valPc, lr, x, y)
   net.divideParam.valInd = ceil(length(x) - (length(x) * valPc)) : length(x);
   net.divideParam.testInd = length(x);
   
+  net.trainParam.lr = lr;
+  
   net = configure(net, x, y);
   [net, ~] = train(net, x, y);
 end
