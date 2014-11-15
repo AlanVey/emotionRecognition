@@ -1,6 +1,6 @@
 function [net] = createNetworkGD(layerSize, numLayers, valPc, lr, lr_inc, lr_dec, x, y)
   hiddenSizes(1:numLayers) = layerSize;
-  net = feedforwardnet(hiddenSizes, 'traingd');
+  net = feedforwardnet(hiddenSizes, 'traingda');
   
   net.divideFcn = 'divideind';
   net.divideParam.trainInd = 1 : floor(length(x) - (length(x) * valPc));
