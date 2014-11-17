@@ -9,6 +9,9 @@ function [net] = createNetworkGD(layerSize, numLayers, valPc, lr, x, y)
   
   net.trainParam.lr = lr;
   
+  net.trainParam.showWindow = false;
+  net.trainParam.showCommandLine = false;
+  
   net = configure(net, x, y);
   [net, ~] = train(net, x, y);
 end
