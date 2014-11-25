@@ -1,6 +1,6 @@
-function [net] = createNetworkGD(layerSize, numLayers, valPc, lr, x, y)
+function [net] = createNetworkGDM(layerSize, numLayers, valPc, lr, mc, x, y)
   hiddenSizes(1:numLayers) = layerSize;
-  net = feedforwardnet(hiddenSizes, 'traingd');
+  net = feedforwardnet(hiddenSizes, 'traingdm');
   
   net.divideFcn = 'divideind';
   net.divideParam.trainInd = 1 : floor(length(x) - (length(x) * valPc));
@@ -8,12 +8,7 @@ function [net] = createNetworkGD(layerSize, numLayers, valPc, lr, x, y)
   net.divideParam.testInd = length(x);
   
   net.trainParam.lr = lr;
-
-  net.trainParam.showWindow = false;
-  net.trainParam.showCommandLine = false;
-  
-  net.trainParam.showWindow = false;
-  net.trainParam.showCommandLine = false;
+  net.trainParam.mc = mc;
   
   net = configure(net, x, y);
   [net, ~] = train(net, x, y);
