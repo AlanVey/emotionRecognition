@@ -23,7 +23,7 @@ function [bestLayerSize, bestNumLayers, bestValPc, bestLr, bestF1] = optParamsGD
           remainingIterations = remainingIterations - 1;
           completedIterations = completedIterations + 1;
           averageTime = averageTime / completedIterations;
-          remainingDays = averageTime * remainingIterations * 60 * 60 * 24;
+          remainingDays = averageTime * remainingIterations / 60 / 60 / 24;
           text = ['Completed: ', num2str(completedIterations), ', remaining time: ', datestr(remainingDays, 'HH:MM:SS')];
           disp(text);
         end

@@ -5,7 +5,6 @@ function [bestLayerSize, bestNumLayers, bestValPc, bestLr, bestF1] = optParamsGD
   lr = 0.05;
   
   for (layerSize = 45 : 100)
-    layerSize
     result = nFoldCrossValidationGD(x, y, 10, layerSize, numLayers, valPc, lr);
     stats = generateAllStats(result);
     if (calcMeanF1(stats) > bestF1)
