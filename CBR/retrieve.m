@@ -9,10 +9,22 @@ function [Case] = retrieve(CBR, newCase)
     sims(caseSim, length(sims, caseSim) + 1) = CBR(i);
   end
   
-  sims = fliplr(sims);
+  topSims = [];
   
-  sims = sims(1:k);
+  for (i = 1 : k)
+    topSims = cat(2, topSims, sims(i));
+  end
   
+  topSims = topSims(1:k);
+  
+  avgRes = mode([topSims.solution].');
+  
+  topSims = fliplr(topSims);
+  for (i = 1 : k)
+    if (topSims(i).solution == avgRes)
+      Case = topSims(i);
+    end
+  end
 end
 
 function [simil, index] = getMinSimilarity(topSimils)
