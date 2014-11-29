@@ -18,9 +18,9 @@ function [results] = ttest(x, y, folds)
   alpha = alpha / 3; % multiple comparisons test
   
   for i = 1:folds
-    results(i, 1) = ttest(DT_stats, NN_Stats, 'Alpha', alpha);
-    results(i, 2) = ttest(DT_stats, CBR_Stats, 'Alpha', alpha);
-    results(i, 3) = ttest(CBR_stats, NN_Stats, 'Alpha', alpha);
+    results(i, 1) = ttest(DT_stats(i), NN_Stats(i), 'Alpha', alpha);
+    results(i, 2) = ttest(DT_stats(i), CBR_Stats(i), 'Alpha', alpha);
+    results(i, 3) = ttest(CBR_stats(i), NN_Stats(i), 'Alpha', alpha);
   end
 end
 
