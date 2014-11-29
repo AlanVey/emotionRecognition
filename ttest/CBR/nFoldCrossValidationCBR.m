@@ -1,12 +1,17 @@
-function predictions = nFoldCrossValidationNN(examples, answers, n, net)
+function predictions = nFoldCrossValidationCBR(examples, answers, n)
 %CROSSVALIDATION takes in data and perfoms nfold validation, generates
 %predictions and returns them with expected values
   predictions = cell(n, 2);
 
   for i = 1:n
-    [~, ~, ~, ~, tI1, tI2] = partition(size(answers, 1), i, n);
+    [egI1, egI2, egI3, egI4, tI1, tI2] = partition(size(answers, 1), i, n);
     
-    predictions(i, 1) = {testANN(net, examples(tI1:tI2, :)')};
+    egs   = [examples(egI1:egI2, :); examples(egI3:egI4, :)];
+    answs = [answers(egI1:egI2, :); answers(egI3:egI4, :)];
+    
+    CBR = CBRinit(egs, answs);
+    
+    predictions(i, 1) = {testCBR(CBR, examples(tI1:tI2, :)')};
     predictions(i, 2) = {answers(tI1:tI2, :)};
   end
 
@@ -34,15 +39,4 @@ function [egI1, egI2, egI3, egI4, tI1, tI2] = partition(numEgs, i, n)
     tI2  = numEgs;
   end
   
-end
-
-function [predictions] = testANN(net, x2)
-  result = sim(net, x2);
-  predictions = NNout2labels(result);
-end
-
-function y = NNout2labels(x)
-
-[v I] = max(x);
-y = I';
 end

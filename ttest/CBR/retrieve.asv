@@ -1,0 +1,45 @@
+function [Case] = retrieve(CBR, newCase)
+  k = 4;
+  simType = 1;
+  
+  sims = repmat(struct('AU', [], 'solution', 0, 'typicality', 0), k, 1);
+  maxSim = 0;
+  maxSimIndex = 0;
+  
+  for (i = 1 : k)
+    sims(i) = CBR(i);
+    caseSim = similarity(CBR(i), newCase, simType);
+    if (caseSim > maxSim)
+      maxSim = caseSim;
+      maxSimIndex = i;
+    end
+  end
+  
+  for (i = k + 1 : length(CBR))
+    caseSim = similarity(CBR(i), newCase, simType);
+    if (caseSim < maxSim)
+      sims(maxSimIndex) = caseSim;
+      [maxSim, maxSimIndex] = getMaxSimilarity(sims);
+    end
+  end
+  
+  avgRes = mode([topSims.solution].');
+  
+  topSims = fliplr(topSims);
+  for (i = 1 : k)
+    if (topSims(i).solution == avgRes)
+      Case = topSims(i);
+    end
+  end
+end
+
+function [simil, index] = getMinSimilarity(sims)
+  simil = sims(1).Simil;
+  index = 1;
+  for (i = 2 : length(sims))
+    if (sims(i).Simil > simil)
+      simil = sims(i).Simil;
+      index = i;
+    end
+  end
+end
