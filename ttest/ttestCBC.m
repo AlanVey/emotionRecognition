@@ -18,9 +18,9 @@ function [results] = ttestCBC(x, y, folds)
   alpha = alpha / 3; % multiple comparisons test
   
   for i = 1:6
-    results(i, 1) = ttest(DT(i, :), NN(i, :), 'Alpha', alpha);
-    results(i, 2) = ttest(DT(i, :), CBR(i, :), 'Alpha', alpha);
-    results(i, 3) = ttest(CBR(i, :), NN(i, :), 'Alpha', alpha);
+    [results(i, 1, 1), results(i, 1, 2)] = ttest(DT(i, :), NN(i, :), 'Alpha', alpha);
+    [results(i, 2, 1), results(i, 2, 2)] = ttest(DT(i, :), CBR(i, :), 'Alpha', alpha);
+    [results(i, 3, 1), results(i, 3, 2)] = ttest(CBR(i, :), NN(i, :), 'Alpha', alpha);
   end
 end
 
