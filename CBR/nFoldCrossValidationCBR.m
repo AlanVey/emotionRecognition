@@ -11,7 +11,7 @@ function predictions = nFoldCrossValidationCBR(examples, answers, n)
     
     CBR = CBRinit(egs, answs);
     
-    predictions(i, 1) = {testCBR(CBR, examples(tI1:tI2, :)')};
+    predictions(i, 1) = {testCBR(CBR, examples(tI1:tI2, :))};
     predictions(i, 2) = {answers(tI1:tI2, :)};
   end
 
