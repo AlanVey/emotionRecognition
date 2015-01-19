@@ -1,47 +1,59 @@
 function [Case] = retrieve(CBR, newCase)
-  k = 4;
-  simType = 1;
+  k = 1;
+  distType = 1;
   
-  sims = repmat(struct('AU', [], 'solution', 0, 'typicality', 0, 'similarity', 0), k, 1);
-  maxSim = intmin;
-  maxSimIndex = 0;
+  entries = repmat(struct('AU', [], 'solution', 0, 'typicality', 0, 'distance', 0), k, 1);
+  maxDist = intmin;
+  maxDistIndex = 0;
   
   for (i = 1 : k)
     curCase = CBR(i);
-    curCase.similarity = similarity(CBR(i), newCase, simType);
-    sims(i) = curCase;
-    if (curCase.similarity > maxSim)
-      maxSim = curCase.similarity;
-      maxSimIndex = i;
+    curCase.distance = distance(CBR(i), newCase, distType);
+    entries(i) = curCase;
+    if (curCase.distance > maxDist)
+      maxDist = curCase.distance;
+      maxDistIndex = i;
     end
   end
   
   for (i = k + 1 : length(CBR))
-    caseSim = similarity(CBR(i), newCase, simType);
-    if (caseSim < maxSim)
+    caseDist = distance(CBR(i), newCase, distType);
+    if (caseDist < maxDist || ((caseDist == maxDist) && (CBR(i).typicality > entries(maxDistIndex).typicality)))
       newCase = CBR(i);
-      newCase.similarity = caseSim;
-      sims(maxSimIndex) = newCase;
-      [maxSim, maxSimIndex] = getMaxSimilarity(sims);
+      newCase.distance = caseDist;
+      entries(maxDistIndex) = newCase;
+      [maxDist, maxDistIndex] = getMaxDistance(entries);
     end
   end
   
-  avgRes = mode([sims.solution].');
+  avgRes = calcAdjMode(entries);
+  bestDistance = intmax;
   
   for (i = 1 : k)
-    if (sims(i).solution == avgRes)
-      Case = sims(i);
+    if ((entries(i).solution == avgRes) && (entries(i).distance < bestDistance))
+      Case = entries(i);
+      bestDistance = entries(i).distance;
     end
   end
 end
 
-function [simil, index] = getMaxSimilarity(sims)
-  simil = sims(1).similarity;
+function [distance, index] = getMaxDistance(entries)
+  distance = entries(1).distance;
   index = 1;
-  for (i = 2 : length(sims))
-    if (sims(i).similarity > simil)
-      simil = sims(i).similarity;
+  for (i = 2 : length(entries))
+    if (entries(i).distance > distance)
+      distance = entries(i).distance;
       index = i;
     end
   end
+end
+
+function [retVal] = calcAdjMode(entries)
+  values = [];
+  for (i = 1 : length(entries))
+    for (j = 1 : entries(i).typicality)
+      values(length(values) + 1) = entries(i).solution;
+    end
+  end
+  retVal = mode(values);
 end
